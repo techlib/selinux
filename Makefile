@@ -17,8 +17,8 @@ install-%: %.pp
 
 uninstall: $(foreach m,${MODULES},uninstall-${m})
 
-uninstall-%: %.pp
-	semodule -r $(word 2,$(subst -, ,$(basename $<)))
+uninstall-%:
+	semodule -r $(word 2,$(subst -, ,$@))
 
 clean:
 	rm -f $(wildcard *.pp) $(wildcard *.mod)
