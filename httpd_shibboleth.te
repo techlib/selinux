@@ -1,0 +1,11 @@
+module httpd_shibboleth 1.0;
+
+require {
+	type httpd_t;
+	type httpd_log_t;
+	class file rename;
+	class file unlink;
+}
+
+allow httpd_t httpd_log_t:file rename;
+allow httpd_t httpd_log_t:file unlink;
