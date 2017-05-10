@@ -10,6 +10,10 @@ require {
 	class file execute;
 }
 
-allow zabbix_agent_t self:process setrlimit;
-allow zabbix_agent_t http_port_t:tcp_socket name_connect;
-allow zabbix_agent_t sudo_exec_t:file execute;
+bool zabbix_can_sudo false;
+
+if (zabbix_can_sudo) {
+	allow zabbix_agent_t self:process setrlimit;
+	allow zabbix_agent_t http_port_t:tcp_socket name_connect;
+	allow zabbix_agent_t sudo_exec_t:file execute;
+}

@@ -7,5 +7,9 @@ require {
 	class file unlink;
 }
 
-allow httpd_t httpd_log_t:file rename;
-allow httpd_t httpd_log_t:file unlink;
+bool httpd_can_shibboleth false;
+
+if (httpd_can_shibboleth) {
+	allow httpd_t httpd_log_t:file rename;
+	allow httpd_t httpd_log_t:file unlink;
+}
