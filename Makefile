@@ -1,11 +1,24 @@
 #!/usr/bin/make -f
 
-pps = $(foreach te,$(wildcard *.te),$(te:.te=.pp))
+pps := $(foreach te,$(wildcard *.te),$(te:.te=.pp))
 
-all: ${pps}
+MODULES = $(foreach pp,${pps},$(basename ${pp}))
+selpps = $(foreach m,${MODULES},${m}.pp)
 
-install: all
-	semodule -u zabbix_agent.pp
+-include local.mk
+
+
+all: ${selpps}
+
+install: $(foreach m,${MODULES},install-${m})
+
+install-%: %.pp
+	semodule -i $<
+
+uninstall: $(foreach m,${MODULES},uninstall-${m})
+
+uninstall-%: %.pp
+	semodule -r $(word 2,$(subst -, ,$(basename $<)))
 
 clean:
 	rm -f $(wildcard *.pp) $(wildcard *.mod)
